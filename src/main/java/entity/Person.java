@@ -14,6 +14,11 @@ public class Person {
     private String middleName;
     private String lastName;
     private Date birthday;
+    private String houseNumber;
+    private String streetName;
+    private String city;
+    private String state;
+    private String zipCode;
 
     @Id
     @Column(name = "personID")
@@ -55,16 +60,6 @@ public class Person {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "birthday")
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,5 +71,71 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(personId, firstName, middleName, lastName, birthday);
+    }
+
+    @Basic
+    @Column(name = "houseNumber")
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    @Basic
+    @Column(name = "streetName")
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "state")
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    @Basic
+    @Column(name = "zipCode")
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "personId=" + personId +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
     }
 }
