@@ -1,17 +1,29 @@
 package com.example.AddressBook;
 
-import entity.Person;
-import com.mysql.cj.jdbc.Driver;
+import org.hibernate.JDBCException;
+
+import java.io.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import entity.Person;
+import org.hibernate.*;
+import javax.persistence.*;
+import javax.servlet.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import com.example.AddressBook.DBPersonAdd;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
+import org.hibernate.*;
+
+import static com.example.AddressBook.DBPersonAdd.AddPerson;
 
 @WebServlet(name = "NewEntryServlet", value = "/NewEntryServlet")
 public class NewEntryServelet extends HttpServlet {
@@ -23,6 +35,7 @@ public class NewEntryServelet extends HttpServlet {
     public String city;
     public String state;
     public String zipCode;
+    Connection connection;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -34,54 +47,31 @@ public class NewEntryServelet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, JDBCException
     {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
 
-        try {
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            out.println("<html><head></head><body>");
-            firstName = request.getParameter("firstName");
-            middleName = request.getParameter("middleName");
-            lastName = request.getParameter("lastName");
-            houseNumber = request.getParameter("houseNumber");
-            streetName = request.getParameter("streetName");
-            city = request.getParameter("city");
-            state = request.getParameter("state");
-            zipCode = request.getParameter("zipCode");
-            out.println("<h1>This person has been added to the address book:</h1>");
-            out.println("<p>Name: " + firstName +" " + middleName +" "+ lastName + "</p>");
-            out.println("<p>Address: " + houseNumber +" " + streetName + "</p>");
-            out.println("<p>         " + city +", " + state +" " + zipCode + "</p>");
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        firstName = request.getParameter("firstName");
+        middleName = request.getParameter("middleName");
+        lastName = request.getParameter("lastName");
+        houseNumber = request.getParameter("houseNumber");
+        streetName = request.getParameter("streetName");
+        city = request.getParameter("city");
+        state = request.getParameter("state");
+        zipCode = request.getParameter("zipCode");
 
-            transaction.begin();
-            Person newEntry = new Person();
-            newEntry.setFirstName(firstName);
-            newEntry.setMiddleName(middleName);
-            newEntry.setLastName(lastName);
-            newEntry.setHouseNumber(houseNumber);
-            newEntry.setStreetName(streetName);
-            newEntry.setCity(city);
-            newEntry.setState(state);
-            newEntry.setZipCode(zipCode);
-            entityManager.persist(newEntry);
-            transaction.commit();
+        out.println("<html><head></head><body>");
+        out.println("<h1>This person has been added to the address book:</h1>");
+        out.println("<p>Name: " + firstName +" " + middleName +" "+ lastName + "</p>");
+        out.println("<p>Address: " + houseNumber +" " + streetName + "</p>");
+        out.println("<p>         " + city +", " + state +" " + zipCode + "</p>");
+        out.println("<h2>The person has been added</h2>");
+        out.println("<a href='/AddressBook_war_exploded/'>Click Here to start over</a> </br>");
+        out.println("<a href=''>Click Here to view entire address book</a>");
+        out.println("</body></html>");
+        AddPerson(firstName, middleName, lastName, houseNumber, streetName,city,state,zipCode);
 
-            out.println("<h2>The person has been added</h2>");
-            out.println("<a href='/AddressBook_war_exploded/'>Click Here to start over</a> </br>");
-            out.println("<a href=''>Click Here to view entire address book</a>");
-            out.println("</body></html>");
-
-        } finally {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            entityManager.close();
-            entityManagerFactory.close();
-        }
 
 
     }
