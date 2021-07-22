@@ -5,9 +5,10 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "Welcome to the Address Book!" %>
 </h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
+<a href="add-address">Add an Address to the Address Book</a> </br>
+<a href="">View Address Book</a> </br>
 </body>
 </html>
